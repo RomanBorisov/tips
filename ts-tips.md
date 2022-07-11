@@ -1,9 +1,6 @@
 # Шпаргалка по TS
-Обозначения
-```
-PrimaryType - один из основных типов (string|number|boolean|т.д.)
-AnyType - любой тип
-```
+Полезные ссылки:
+- https://www.typescriptlang.org/docs/handbook/utility-types.html - utility тайпы (типа Omit и тп)
 ## Tip #1
 ```
 let a: {
@@ -80,7 +77,24 @@ function getProperty<T, K extends keyof T>(obj: T, key: K) {
 > someFunc<ISomeInterface>(a: {propA: 'asd', propB: 2})
 > ```
 > Вызов функции с данными параметрами будет возвращать тип  string | number
+## Tip #5 Проверка, что переменная реализует  конкретный интерфейс
+```
+interface IFish {
+    swim: () => void;
+}
+interface IBird {
+    fly: () => void;
+}
+
+function isFish(pet: IFish | IBird) pet is Fish {
+    return (pet as IFish).swim !== undefined   && typeof (pet as Fish).swim !== 'function;
+}
+
+```
 
 
 ## Additional tips
-***T extends object*** - означает, что тип T должен быть только объектом (пустой тоже подойдет)
+| Tip                         | Описание                                                                                 |
+|-----------------------------|------------------------------------------------------------------------------------------|
+| ***T extends object***      | тип T должен быть только объектом (пустой тоже подойдет)                                 |
+| **_value instanseof SomeObject_** | проверка, что value является экземпляром класса SomeObj (проверяется цепочка прототипов) |
