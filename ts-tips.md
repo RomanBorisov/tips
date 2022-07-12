@@ -1,6 +1,7 @@
 # Шпаргалка по TS
 Полезные ссылки:
 - https://www.typescriptlang.org/docs/handbook/utility-types.html - utility тайпы (типа Omit и тп)
+- https://olegbarabanov.github.io/google-typescript-style-guide-ru/ Руководство Google по стилю написания кода на языке TypeScript (перевод)
 ## Tip #1
 ```
 let a: {
