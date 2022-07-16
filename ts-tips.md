@@ -1,3 +1,4 @@
+
 # Шпаргалка по TS
 Полезные ссылки:
 - https://www.typescriptlang.org/docs/handbook/utility-types.html - utility тайпы (типа Omit и тп)
@@ -90,12 +91,15 @@ interface IBird {
 function isFish(pet: IFish | IBird) pet is Fish {
     return (pet as IFish).swim !== undefined   && typeof (pet as Fish).swim !== 'function;
 }
-
 ```
-
+## Tip #6 Infer - захват типа в условной конструкции
+![](https://habrastorage.org/r/w1560/webt/ry/yt/ck/ryytckvyu57ilxvkicuumxltwn4.jpeg)
 
 ## Additional tips
 | Tip                         | Описание                                                                                 |
 |-----------------------------|------------------------------------------------------------------------------------------|
 | ***T extends object***      | тип T должен быть только объектом (пустой тоже подойдет)                                 |
-| **_value instanseof SomeObject_** | проверка, что value является экземпляром класса SomeObj (проверяется цепочка прототипов) |
+| ***value instanseof SomeObject*** | проверка, что value является экземпляром класса SomeObj (проверяется цепочка прототипов) |
+| [K in keyof P] ***-?*** : T[K] | -? - удаляет опциональность (все поля будут обязательными).
+    
+  
