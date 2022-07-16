@@ -94,6 +94,83 @@ function isFish(pet: IFish | IBird) pet is Fish {
 ```
 ## Tip #6 Infer - захват типа в условной конструкции
 ![](https://habrastorage.org/r/w1560/webt/ry/yt/ck/ryytckvyu57ilxvkicuumxltwn4.jpeg)
+## Tip #7 Решение проблемы множественного наследования (1 cпособ)
+В TS нет возможности множественного наследования.
+То есть следующий код не будет работать:
+```
+class ClassName1 {}
+class ClassName2 {}
+class ClassName3 extends ClassName1, ClassName2 {} // Не будет работать
+```
+Для решения этой задачи используются "Миксины".
+Пример:
+```
+class Animal {
+    feed(): void {
+        console.log('feed!');
+    }
+}
+
+class Movable {
+    speed: number = 0;
+    move(): void {
+        console.log('wroom wroom!');
+    }
+}
+
+class Horse {}
+```
+Создаем вспомогательный тип. Данный тип включает в себя только классы:
+```
+type Constructor = new (...args: any[]) => {}
+```
+Миксин
+```
+function applyMixins(derivedCtor: Contstructor, baseCtors: Constructor[] = []) {
+    baseCtors.forEach((baseCtor) => { // Проходим по всем классам родителям
+        Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => { // берем свойства родителей
+            derivedCtor.prototype[name] = baseCtor.prototype[name]; // записываем их в класс-потомок
+        })
+    })
+}
+```
+Использование:
+```
+applyMixins(Horse, [Movable, Animal]);
+let pony: Horse = new Horse(); 
+pony.feed();
+pony.move();
+```
+## Tip #8 Решение проблемы множественного наследования (2 cпособ)
+```
+class Animal {
+    feed(): void {
+        console.log('feed!');
+    }
+}
+
+class Horse extends Animal {}
+
+type Constructor = new (...args: any[]) => {}
+
+function Movable<BaseType extends Constructor>(Base: BaseType) {
+    return class extends Base {
+        speed: number = 0;
+        move(): void {
+            console.log('Wrooom');
+        }
+    }
+}
+
+const pony = new Horse();
+pony.feed();
+pony.move(); // недоступно
+const MovableHorse = Movable(Horse);
+const movablePony = new MovableHorse();
+movablePony.feed();
+movablePony.move(); // доступно
+```
+
 
 ## Additional tips
 | Tip                         | Описание                                                                                 |
